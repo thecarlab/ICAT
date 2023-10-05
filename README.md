@@ -9,9 +9,11 @@ Project for easily sychronize update among icat.
 
 1. Start laser
 
-roslaunch yahboomcar_nav laser_bringup.launch
+roslaunch icat_nav laser_bringup.launch
 
+2.Start gmapping
 
+roslaunch icat_nav icat_gmapping_ndtodom.launch
 
 
 

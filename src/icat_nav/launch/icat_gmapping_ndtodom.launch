@@ -1,5 +1,4 @@
 <launch>
     <include file="$(find icat_nav)/launch/library/gmapping.launch"/>
 
-    <include file="$(find icat_nav)/launch/view/view_map.launch"/>
 </launch>
