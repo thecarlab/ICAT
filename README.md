@@ -1,19 +1,30 @@
 # icat
 
-<<<<<<< HEAD
-
-Project for easily sychronize update among iCat.
-=======
-Project for easily sychronize update among icat.
->>>>>>> 24f202bf6ef7d3b20446a12b6365edd28dd20ad0
-
-1. Start laser
+1. Start laser and robot base  (on agent)
 
 roslaunch icat_nav laser_bringup.launch
+ 
+ 2. Start localization  (on agent)
 
-2.Start gmapping
+roslaunch ndt_localizer ndt_localizer.launch 
 
-roslaunch icat_nav icat_gmapping_ndtodom.launch
+3. Start algorithm  (on agent)
+
+ 3.1  draw your own map and save your map file afterwards  (under icat_nav/maps folder) (Optional)
+
+ roslaunch icat_nav icat_gmapping_ndtodom.launch
+
+3.2 Start navigation  (on agent)
+
+roslaunch icat_nav icat_navigation.launch use_rviz:=false map:=map_1
+
+4. Visualize in rviz (on host)
+
+4.1 start visualization for navigation
+rosrun rviz rviz -d /home/tby/icat/src/icat_nav/rviz/navigate.rviz
+
+4.2 start visualization for mapping
+rosrun rviz rviz -d /home/tby/icat/src/ndt_localizer/cfgs/rock-auto.rviz
 
 
 
