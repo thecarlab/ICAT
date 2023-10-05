@@ -71,6 +71,8 @@ void NdtLocalizer::timer_diagnostic()
 void NdtLocalizer::callback_init_pose(
   const geometry_msgs::PoseWithCovarianceStamped::ConstPtr & initial_pose_msg_ptr)
 {
+   std::cout << "Get initial message" << std::endl;
+   std::cout <<  initial_pose_msg_ptr->header.frame_id << " " << map_frame_;
   if (initial_pose_msg_ptr->header.frame_id == map_frame_) {
     initial_pose_cov_msg_ = *initial_pose_msg_ptr;
   } else {
@@ -92,6 +94,8 @@ void NdtLocalizer::callback_init_pose(
 void NdtLocalizer::callback_pointsmap(
   const sensor_msgs::PointCloud2::ConstPtr & map_points_msg_ptr)
 {
+
+  std::cout << "map recieved" << std::endl;
   const auto trans_epsilon = ndt_.getTransformationEpsilon();
   const auto step_size = ndt_.getStepSize();
   const auto resolution = ndt_.getResolution();
@@ -121,6 +125,8 @@ void NdtLocalizer::callback_pointsmap(
 void NdtLocalizer::callback_pointcloud(
   const sensor_msgs::PointCloud2::ConstPtr & sensor_points_sensorTF_msg_ptr)
 {
+  std:: cout << "new point cloud" << std::endl;
+   
   const auto exe_start_time = std::chrono::system_clock::now();
   // mutex Map
   std::lock_guard<std::mutex> lock(ndt_map_mtx_);
