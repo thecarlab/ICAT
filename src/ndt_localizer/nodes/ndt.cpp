@@ -223,9 +223,9 @@ void NdtLocalizer::callback_pointcloud(
   result_pose_stamped_msg.header.frame_id = odom_frame_;
   result_pose_stamped_msg.pose = result_pose_msg;
 
-  if (is_converged) {
-    ndt_pose_pub_.publish(result_pose_stamped_msg);
-  }
+  // if (is_converged) {
+  ndt_pose_pub_.publish(result_pose_stamped_msg);
+  // }
 
   // publish tf(map frame to base frame)
   publish_tf(odom_frame_, base_frame_, result_pose_stamped_msg);
