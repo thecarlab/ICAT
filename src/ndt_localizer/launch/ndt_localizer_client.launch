@@ -1,0 +1,61 @@
+<launch>
+    <arg name="namespace" default="v2"/>
+    <!-- Topics -->
+    <param name="/use_sim_time" value="false" />
+
+
+        <!-- tf -->
+
+
+    <arg name="trans_epsilon" default="0.05" doc="The maximum difference between two consecutive transformations in order to consider convergence" />
+    <arg name="step_size" default="0.05" doc="The newton line search maximum step length" />
+    <arg name="resolution" default="0.3" doc="The ND voxel grid resolution" />
+    <arg name="max_iterations" default="60.0" doc="The number of iterations required to calculate alignment" />
+    <arg name="converged_param_transform_probability" default="3.0" doc="" />
+    <arg name="input_map_points_topic" default="/points_map" doc="Map points topic" />
+
+    
+
+    <group ns="$(arg namespace)">
+
+        <!-- Only topics in a group will be automatically added a namespace -->
+
+        <arg name="input_sensor_points_topic" default="filtered_points" doc="Sensor points topic"/>
+        <arg name="input_initial_pose_topic" default="ekf_pose_with_covariance" doc="Initial position topic to align" />
+            
+        <arg name="output_pose_topic" default="ndt_pose" doc="Estimated self position" />
+        <arg name="output_pose_with_covariance_topic" default="ndt_pose_with_covariance" doc="Estimated self position with covariance" />
+        <arg name="output_diagnostics_topic" default="diagnostics" doc="Diagnostic topic" />
+
+        <!-- These frames will not be added a namespace, thus manually add it -->
+        <arg name="base_frame" default="$(arg namespace)/base_footprint" doc="Vehicle reference frame" />
+        <arg name="odom_frame" default="$(arg namespace)/odom" doc="Vehicle navigation frame" />    
+
+        <include file="$(find ndt_localizer)/launch/static_tf.launch" >
+            <arg name="namespace" value="$(arg namespace)" />
+        </include>
+        <include file="$(find ndt_localizer)/launch/points_downsample.launch" />
+
+        <node pkg="ndt_localizer" type="laser_pointcloud2.py" name="laser_pointcloud2_node" output="screen" />
+
+        <node pkg="ndt_localizer" type="ndt_localizer_node" name="ndt_localizer_node" output="screen">
+
+            <remap from="filtered_points" to="$(arg input_sensor_points_topic)" />
+            <remap from="initialpose" to="$(arg input_initial_pose_topic)" />
+            <remap from="points_map" to="$(arg input_map_points_topic)" />
+            <remap from="ndt_pose" to="$(arg output_pose_topic)" />
+            <remap from="diagnostics" to="$(arg output_diagnostics_topic)" />
+
+            <param name="odom_frame" value="$(arg odom_frame)" />
+            <param name="base_frame" value="$(arg base_frame)" />
+            <param name="trans_epsilon" value="$(arg trans_epsilon)" />
+            <param name="step_size" value="$(arg step_size)" />
+            <param name="resolution" value="$(arg resolution)" />
+            <param name="max_iterations" value="$(arg max_iterations)" />
+            <param name="converged_param_transform_probability" value="$(arg converged_param_transform_probability)" />
+        </node>
+    </group>
+
+    <!-- <include file="$(find ndt_localizer)/launch/lexus.launch" /> -->
+
+</launch>

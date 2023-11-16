@@ -281,8 +281,10 @@ void NdtLocalizer::init_params(){
   private_nh_.getParam("resolution", resolution);
   private_nh_.getParam("max_iterations", max_iterations);
 
+  private_nh_.getParam("odom_frame", odom_frame_);
+
   map_frame_ = "map";
-  odom_frame_ = "odom";
+  // odom_frame_ = "odom";
 
   ndt_.setTransformationEpsilon(trans_epsilon);
   ndt_.setStepSize(step_size);

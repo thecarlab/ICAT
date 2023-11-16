@@ -19,14 +19,17 @@
    
     <!-- 底层驱动节点 -->
     <!-- Low-level driver node -->
+    <arg name="vel_raw_topic" default="vel_raw"/>
+    <arg name="imu_topic" default="imu/imu_raw"/>
+    <arg name="mag_topic" default="velmag/mag_raw_raw"/>
     <node pkg="yahboomcar_bringup" type="Mcnamu_driver.py" name="driver_node" required="true" output="screen" if="$(eval arg('robot_type') == 'R2')">
         <param name="xlinear_speed_limit" type="double" value="1.0"/>
         <param name="ylinear_speed_limit" type="double" value="1.0"/>
         <param name="angular_speed_limit" type="double" value="5.0"/>
         <param name="imu_link" type="string" value="imu_link"/>
-        <remap from="/pub_vel" to="/vel_raw"/>
-        <remap from="/pub_imu" to="/imu/imu_raw"/>
-        <remap from="/pub_mag" to="/mag/mag_raw"/>
+        <remap from="/pub_vel" to="$(arg vel_raw_topic)"/>
+        <remap from="/pub_imu" to="$(arg imu_topic)"/>
+        <remap from="/pub_mag" to="$(arg mag_topic)"/>
     </node>
 
     <!--若车型不匹配，启动警告节点-->

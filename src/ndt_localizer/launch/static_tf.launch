@@ -5,7 +5,8 @@
     <node pkg="tf2_ros" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 map world" /> -->
     <!-- <node pkg="tf" type="static_transform_publisher" name="laser_link_to_laser"
           args="0 0 0 0 0 0 laser_link laser 100" /> -->
-
-    <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
-          args="0 0 0 0 0 0 map odom 100" />
+      <!-- odom frame is align with the map frame -->
+      <arg name="namespace" default="v1"/>
+      <node pkg="tf" type="static_transform_publisher" name="map_to_odom"
+          args="0 0 0 0 0 0 map $(arg namespace)/odom 10" />
 </launch>

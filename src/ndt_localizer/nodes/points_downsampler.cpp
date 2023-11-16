@@ -99,7 +99,7 @@ int main(int argc, char** argv)
   }
 
   // Publishers
-  filtered_points_pub = nh.advertise<sensor_msgs::PointCloud2>("/filtered_points", 10);
+  filtered_points_pub = nh.advertise<sensor_msgs::PointCloud2>("filtered_points", 10);
 
   // Subscribers
   ros::Subscriber scan_sub = nh.subscribe(POINTS_TOPIC, 10, scan_callback);
