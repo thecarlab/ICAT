@@ -14,8 +14,10 @@
             <arg name="frame_id" value="$(arg namespace)/laser" />
         </include>
         <include file="$(find icat_nav)/launch/bringup.launch">
+            <arg name="ns" default="$(arg namespace)"/>
             <arg name="nav_use_rotvel" value="$(arg nav_use_rotvel)"/>
         </include>
+
         <!-- 激光雷达的坐标系 || Lidar coordinate system -->
         <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser"
             args="0.0435 5.258E-05 0.11 0 0 0  $(arg namespace)/base_link $(arg namespace)/laser 30" if="$(eval arg('lidar_type') == '4ROS')"/>
