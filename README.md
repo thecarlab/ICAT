@@ -1,16 +1,18 @@
-# icat single vehicle
+## Multi-agent ICAT Start Program
 
 1. Start laser and robot base  (on agent)
 
 roslaunch icat_nav laser_bringup.launch namespace:=v1
 
-2. Start edge map server (on server)
+2. Start edge map server (on server or a single agent for only once)
 
 roslaunch ndt_localizer map_loader.launch
 
 3. Start localization  (on agent)
 
-roslaunch ndt_localizer ndt_localizer.launch namespace:=v1 
+roslaunch ndt_localizer ndt_localizer_client.launch namespace:=v1 
+
+# Optional Below
 
 4. start visualization for mapping
 
