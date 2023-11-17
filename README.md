@@ -1,4 +1,4 @@
-## Multi-agent ICAT Start Program
+### Multi-agent ICAT Start Program
 
 1. Start laser and robot base  (on agent)
 
@@ -12,7 +12,7 @@ roslaunch ndt_localizer map_loader.launch
 
 roslaunch ndt_localizer ndt_localizer_client.launch namespace:=v1 
 
-# Optional Below
+### Optional Below
 
 4. start visualization for mapping
 
