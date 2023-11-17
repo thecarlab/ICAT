@@ -15,11 +15,11 @@ class LaserToPC2:
 
         # Subscribe to the topic that publishes LaserScan messages
         self.laser_sub = rospy.Subscriber(
-            '/scan', LaserScan, self.scan_callback)
+            'scan', LaserScan, self.scan_callback)
 
         # Publish PointCloud2 messages
         self.pc2_pub = rospy.Publisher(
-            '/points_raw', PointCloud2, queue_size=1)
+            'points_raw', PointCloud2, queue_size=1)
 
     def scan_callback(self, data):
         # Convert LaserScan to PointCloud2

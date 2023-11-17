@@ -21,7 +21,7 @@
         <!-- Only topics in a group will be automatically added a namespace -->
 
         <arg name="input_sensor_points_topic" default="filtered_points" doc="Sensor points topic"/>
-        <arg name="input_initial_pose_topic" default="ekf_pose_with_covariance" doc="Initial position topic to align" />
+        <arg name="input_initial_pose_topic" default="/initialpose" doc="Initial position topic to align" />
             
         <arg name="output_pose_topic" default="ndt_pose" doc="Estimated self position" />
         <arg name="output_pose_with_covariance_topic" default="ndt_pose_with_covariance" doc="Estimated self position with covariance" />
