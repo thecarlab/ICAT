@@ -13,52 +13,120 @@ class KalmanFilterNode:
         self.state_estimate = np.zeros(6)  # [x, y, theta, vx, vy, omega]
         self.covariance_matrix = np.diag([0.1, 0.1, np.radians(5), 0.1, 0.1, np.radians(5)])
         self.state_buffer = deque(maxlen=100)  # Buffer for past states, adjust size as needed
-
+        self.track_buffer = []
         self.path = Path()
         self.path.header.frame_id = "map"  # Adjust frame ID as needed
 
-        rospy.Subscriber('/ndt_pose', PoseStamped, self.ndt_pose_callback)
-        rospy.Subscriber('/vel_raw', Twist, self.vel_raw_callback)
+        rospy.Subscriber('robot1/ndt_pose', PoseStamped, self.ndt_pose_callback1)
+        # rospy.Subscriber('robot1/vel_raw', Twist, self.vel_raw_callback)
 
-        self.filtered_pose_pub = rospy.Publisher('/filtered_ndt_pose', PoseStamped, queue_size=10)
-        self.filtered_path_pub = rospy.Publisher('/filtered_path', Path, queue_size=10)
+        rospy.Subscriber('robot2/ndt_pose', PoseStamped, self.ndt_pose_callback2)
+        # rospy.Subscriber('robot2/vel_raw', Twist, self.vel_raw_callback)
 
-    def ndt_pose_callback(self, msg):
-        # Extract position and orientation
+        rospy.Subscriber('robot3/ndt_pose', PoseStamped, self.ndt_pose_callback3)
+        # rospy.Subscriber('robot3/vel_raw', Twist, self.vel_raw_callback)
+
+        rospy.Subscriber('robot4/ndt_pose', PoseStamped, self.ndt_pose_callback4)
+        # rospy.Subscriber('robot4/vel_raw', Twist, self.vel_raw_callback)
+
+        rospy.Subscriber('robot5/ndt_pose', PoseStamped, self.ndt_pose_callback5)
+        # rospy.Subscriber('robot5/vel_raw', Twist, self.vel_raw_callback)
+
+
+        rospy.Subscriber('robot6/ndt_pose', PoseStamped, self.ndt_pose_callback6)
+        # rospy.Subscriber('robot6/vel_raw', Twist, self.vel_raw_callback)
+
+        # self.filtered_pose_pub = rospy.Publisher('/filtered_ndt_pose', PoseStamped, queue_size=10)
+        # self.filtered_path_pub = rospy.Publisher('/filtered_path', Path, queue_size=10)
+        self.car_state_pub1 = rospy.Publisher('robot1/car_state',Twist, queue_size=10 )
+        self.car_state_pub2 = rospy.Publisher('robot2/car_state',Twist, queue_size=10 )
+        self.car_state_pub3 = rospy.Publisher('robot3/car_state',Twist, queue_size=10 )
+        self.car_state_pub4 = rospy.Publisher('robot4/car_state',Twist, queue_size=10 )
+        self.car_state_pub5 = rospy.Publisher('robot5/car_state',Twist, queue_size=10 )
+        self.car_state_pub6 = rospy.Publisher('robot6/car_state',Twist, queue_size=10 )
+        # self.car_state_pub = rospy.Publisher('/car_state',Twist, queue_size=10 )
+
+
+    def make_twist(self, car_state):
+        x,y,z = car_state
+        cmd = Twist()
+        cmd.linear.x = x
+        cmd.linear.y = y
+        cmd.linear.z = z
+        cmd.angular.x = 0
+        cmd.angular.y = 0
+        cmd.angular.z = 0
+
+        return cmd
+
+    def ndt_pose_callback1(self, msg):
         x = msg.pose.position.x
         y = msg.pose.position.y
         orientation_q = msg.pose.orientation
         _, _, theta = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
-
-        # Update state estimate with position and orientation
         self.state_estimate[0:3] = [x, y, theta]
+        twist_state = self.make_twist([x,y,theta])
+        self.car_state_pub1.publish(twist_state)
 
-        # Call update step of Kalman Filter (to be implemented)
-        # measurement_covariance = np.diag([0.1, 0.1, np.radians(5)])  # Example values
-        # self.update_step(self.state_estimate[0:3], measurement_covariance)
+    def ndt_pose_callback2(self, msg):
+        x = msg.pose.position.x
+        y = msg.pose.position.y
+        orientation_q = msg.pose.orientation
+        _, _, theta = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
+        self.state_estimate[0:3] = [x, y, theta]
+        twist_state = self.make_twist([x,y,theta])
+        self.car_state_pub2.publish(twist_state)
 
-    def vel_raw_callback(self, msg):
-        # Extract velocities
-        vx = msg.linear.x
-        vy = msg.linear.y
-        omega = msg.linear.z  # Angular velocity
+    def ndt_pose_callback3(self, msg):
+        x = msg.pose.position.x
+        y = msg.pose.position.y
+        orientation_q = msg.pose.orientation
+        _, _, theta = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
+        self.state_estimate[0:3] = [x, y, theta]
+        twist_state = self.make_twist([x,y,theta])
+        self.car_state_pub3.publish(twist_state)
 
-        # Update state estimate with velocities
-        self.state_estimate[3:] = [vx, vy, omega]
+    def ndt_pose_callback4(self, msg):
+        x = msg.pose.position.x
+        y = msg.pose.position.y
+        orientation_q = msg.pose.orientation
+        _, _, theta = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
+        self.state_estimate[0:3] = [x, y, theta]
+        twist_state = self.make_twist([x,y,theta])
+        self.car_state_pub4.publish(twist_state)
 
-        # Call prediction step of Kalman Filter (to be implemented)
-        # dt = 0.1  # Time interval, adjust as needed
-        # self.prediction_step(dt)
+    def ndt_pose_callback5(self, msg):
+        x = msg.pose.position.x
+        y = msg.pose.position.y
+        orientation_q = msg.pose.orientation
+        _, _, theta = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
+        self.state_estimate[0:3] = [x, y, theta]
+        twist_state = self.make_twist([x,y,theta])
+        self.car_state_pub5.publish(twist_state)
 
-    # def prediction_step(self, dt):
-    #     x, y, theta, vx, vy, omega = self.state_estimate
-    #     self.state_estimate[0] += vx * dt
-    #     self.state_estimate[1] += vy * dt
-    #     self.state_estimate[2] += omega * dt
+    def ndt_pose_callback6(self, msg):
+        x = msg.pose.position.x
+        y = msg.pose.position.y
+        orientation_q = msg.pose.orientation
+        _, _, theta = euler_from_quaternion([orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w])
+        self.state_estimate[0:3] = [x, y, theta]
+        twist_state = self.make_twist([x,y,theta])
+        self.car_state_pub6.publish(twist_state)
 
-    #     # Process noise covariance matrix
-    #     Q = np.diag([0.1, 0.1, np.radians(5), 0.1, 0.1, np.radians(5)])
-    #     self.covariance_matrix += Q
+
+
+
+
+
+    # def vel_raw_callback(self, msg):
+    #     # Extract velocities
+    #     vx = msg.linear.x
+    #     vy = msg.linear.y
+    #     omega = msg.linear.z  # Angular velocity
+    #     # Update state estimate with velocities
+    #     self.state_estimate[3:] = [vx, vy, omega]
+
+
 
 
     def prediction_step(self, dt):
@@ -87,31 +155,8 @@ class KalmanFilterNode:
         rate = rospy.Rate(10)  # 10 Hz, adjust as needed
         while not rospy.is_shutdown():
             # Publish the filtered pose
-            self.prediction_step(dt=0.1)
 
-            measurement_covariance = np.diag([0.1, 0.1, np.radians(5)])  # Example values
-            self.update_step(self.state_estimate[0:3], measurement_covariance)
-            filtered_pose_msg = PoseStamped()
-            filtered_pose_msg.header.stamp = rospy.Time.now()
-            filtered_pose_msg.header.frame_id = "map"
-            filtered_pose_msg.pose.position.x = self.state_estimate[0]
-            filtered_pose_msg.pose.position.y = self.state_estimate[1]
-            filtered_pose_msg.pose.position.z = 0
-
-            q = quaternion_from_euler(0, 0, self.state_estimate[2])
-            filtered_pose_msg.pose.orientation.x = q[0]
-            filtered_pose_msg.pose.orientation.y = q[1]
-            filtered_pose_msg.pose.orientation.z = q[2]
-            filtered_pose_msg.pose.orientation.w = q[3]
-
-            self.filtered_pose_pub.publish(filtered_pose_msg)
-
-            # Update and publish the path
-            self.path.header.stamp = rospy.Time.now()
-            self.path.poses.append(filtered_pose_msg)
-            self.filtered_path_pub.publish(self.path)
-            self.state_buffer.append(self.state_estimate.copy())
-
+            
             rate.sleep()
 
 if __name__ == '__main__':
